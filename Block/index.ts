@@ -24,6 +24,10 @@ export default class Block {
     });
   }
 
+  static hash({ lastHash, data, timestamp }: Omit<Block, 'hash'>) {
+    return SHA256(`${lastHash}${JSON.stringify(data)}${timestamp}`).toString();
+  }
+
   static mineBlock(lastBlock: Block, data: BlockData) {
     const lastHash = lastBlock.hash;
     const timestamp = Date.now();
@@ -35,9 +39,5 @@ export default class Block {
       data,
       timestamp,
     });
-  }
-
-  static hash({ lastHash, data, timestamp }: Omit<Block, 'hash'>) {
-    return SHA256(`${lastHash}${JSON.stringify(data)}${timestamp}`).toString();
   }
 }

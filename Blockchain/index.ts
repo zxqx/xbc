@@ -23,11 +23,15 @@ export default class Blockchain {
   }
 
   static blockIsValid(block: Block, lastBlock: Block) {
-    if (block.lastHash === lastBlock.hash && block.hash === Block.hash(block)) {
-      return true;
+    if (block.lastHash !== lastBlock.hash) {
+      return false;
+    }
+    
+    if (block.hash !== Block.hash(block)) {
+      return false;
     }
 
-    return false;
+    return true;
   }
 
   incomingChainIsValid(chain: Block[]) {
