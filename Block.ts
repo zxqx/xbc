@@ -1,6 +1,6 @@
 import { SHA256 } from 'crypto-js';
 
-type BlockData = object[];
+export type BlockData = object[];
 
 export default class Block {
   lastHash: string;

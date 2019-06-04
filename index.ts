@@ -1,4 +1,6 @@
-import Block from './Block';
+import Blockchain from './Blockchain';
 
-const block = Block.mineBlock(Block.getGenesisBlock(), [{ test: 'test' }]);
-console.log(Block.mineBlock(block, [{ more: 'data'}]));
+const blockchain = new Blockchain();
+blockchain.addBlock([{ data: 'more data' }]);
+blockchain.addBlock([{ data2: 'even more data' }]);
+console.log(blockchain);
