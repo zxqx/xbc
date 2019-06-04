@@ -3,13 +3,13 @@ import { SHA256 } from 'crypto-js';
 export type BlockData = object[];
 
 export default class Block {
-  prevHash: string;
+  lastHash: string;
   hash: string;
   data: BlockData;
   timestamp: number;
 
-  constructor({ prevHash, hash, data, timestamp }: Block) {
-    this.prevHash = prevHash;
+  constructor({ lastHash, hash, data, timestamp }: Block) {
+    this.lastHash = lastHash;
     this.hash = hash;
     this.data = data;
     this.timestamp = timestamp;
@@ -17,27 +17,27 @@ export default class Block {
 
   static getGenesisBlock() {
     return new this({
-      prevHash: 'none',
+      lastHash: 'none',
       hash: 'genesis',
       data: [],
       timestamp: 1559618129346,
     });
   }
 
-  static mineBlock(prevBlock: Block, data: BlockData) {
-    const prevHash = prevBlock.hash;
+  static mineBlock(lastBlock: Block, data: BlockData) {
+    const lastHash = lastBlock.hash;
     const timestamp = Date.now();
-    const hash = Block.hash({ prevHash, data, timestamp });
+    const hash = Block.hash({ lastHash, data, timestamp });
 
     return new this({
-      prevHash,
+      lastHash,
       hash,
       data,
       timestamp,
     });
   }
 
-  static hash({ prevHash, data, timestamp }: Omit<Block, 'hash'>) {
-    return SHA256(`${prevHash}${JSON.stringify(data)}${timestamp}`).toString();
+  static hash({ lastHash, data, timestamp }: Omit<Block, 'hash'>) {
+    return SHA256(`${lastHash}${JSON.stringify(data)}${timestamp}`).toString();
   }
 }

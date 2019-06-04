@@ -11,7 +11,7 @@ describe('Blockchain', () => {
   it('creates a new blockchain with a provided chain', () => {
     const chain = [
       {
-        prevHash: 'prevHash',
+        lastHash: 'lastHash',
         hash: 'hash',
         data: [{ test: 'test' }],
         timestamp: 1,
@@ -26,13 +26,13 @@ describe('Blockchain', () => {
   it('gets last block in the blockchain', () => {
     const chain = [
       {
-        prevHash: 'none',
+        lastHash: 'none',
         hash: 'firstHash',
         data: [{ test: 'test' }],
         timestamp: 1,
       },
       {
-        prevHash: 'firstHash',
+        lastHash: 'firstHash',
         hash: 'secondHash',
         data: [{ test: 'test' }],
         timestamp: 2,
@@ -89,7 +89,7 @@ describe('Blockchain', () => {
 
     const chain = [
       {
-        prevHash: 'prevHash',
+        lastHash: 'lastHash',
         hash: 'hash',
         data: [{ test: 'test' }],
         timestamp: 1,
@@ -101,7 +101,7 @@ describe('Blockchain', () => {
     expect(blockchain1.incomingChainIsValid(blockchain2.chain)).toBe(false);
   });
 
-  it('invalidates incoming chain containing block with invalid previous hash', () => {
+  it('invalidates incoming chain containing block with invalid lastious hash', () => {
     const blockchain1 = new Blockchain();
     blockchain1.addBlock([{ transaction: 7.44 }]);
 
@@ -109,7 +109,7 @@ describe('Blockchain', () => {
     blockchain2.addBlock([{ transaction: 7.44 }]);
     blockchain2.addBlock([{ transaction: 2.50 }]);
 
-    blockchain2.chain[2].prevHash = 'hacked';
+    blockchain2.chain[2].lastHash = 'hacked';
 
     expect(blockchain1.incomingChainIsValid(blockchain2.chain)).toBe(false);
   });

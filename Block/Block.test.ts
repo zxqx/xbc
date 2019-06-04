@@ -4,15 +4,15 @@ describe('Block', () => {
   it('generates a genesis block', () => {
     const block = Block.getGenesisBlock();
 
-    expect(block.prevHash).toEqual('none');
+    expect(block.lastHash).toEqual('none');
     expect(block.hash).toEqual('genesis');
   });
 
-  it('mines a new block with a reference to the previous block', () => {
+  it('mines a new block with a reference to the lastious block', () => {
     const genesisBlock = Block.getGenesisBlock();
     const blockData = [{ transaction: 4.20 }];
     const block = Block.mineBlock(genesisBlock, blockData);
 
-    expect(block.prevHash).toEqual(genesisBlock.hash);
+    expect(block.lastHash).toEqual(genesisBlock.hash);
   });
 });

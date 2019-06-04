@@ -12,8 +12,8 @@ export default class Blockchain {
   }
 
   addBlock(data: BlockData) {
-    const prevBlock = this.getLastBlock();
-    const block = Block.mineBlock(prevBlock, data);
+    const lastBlock = this.getLastBlock();
+    const block = Block.mineBlock(lastBlock, data);
 
     this.chain.push(block);
   }
@@ -33,9 +33,9 @@ export default class Blockchain {
 
     for (let i = 1; i < chain.length; i++) {
       const block = chain[i];
-      const prevBlock = chain[i - 1];
+      const lastBlock = chain[i - 1];
 
-      if (block.prevHash !== prevBlock.hash) {
+      if (block.lastHash !== lastBlock.hash) {
         return false;
       }
 
