@@ -5,12 +5,16 @@
   "main": "index.js",
   "devDependencies": {
     "@types/crypto-js": "^3.1.43",
+    "@types/jest": "^24.0.13",
+    "jest": "^24.8.0",
     "nodemon": "^1.19.1",
+    "ts-jest": "^24.0.2",
     "ts-node": "^8.2.0",
     "typescript": "^3.5.1"
   },
   "scripts": {
-    "start": "nodemon --exec ts-node -- index.ts"
+    "start": "nodemon --exec ts-node -- index.ts",
+    "test": "jest --watch **/*.test.ts"
   },
   "author": "Zak Angelle",
   "license": "MIT",

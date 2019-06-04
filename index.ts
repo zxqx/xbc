@@ -1,12 +1,12 @@
 import Blockchain from './Blockchain';
 
 const blockchain1 = new Blockchain();
-blockchain1.addBlock([{ data: 'more data' }]);
-blockchain1.addBlock([{ data2: 'even more data' }]);
+blockchain1.addBlock([{ transaction: 7.44 }]);
+blockchain1.addBlock([{ transaction: 2.50 }]);
 
 const blockchain2 = new Blockchain();
-blockchain2.addBlock([{ data: 'more data' }]);
-blockchain2.addBlock([{ data2: 'even more data' }]);
-blockchain2.addBlock([{ data3: 'even more data' }]);
+blockchain2.addBlock([{ transaction: 7.44 }]);
+blockchain2.addBlock([{ transaction: 2.12 }]);
+blockchain2.addBlock([{ transaction: 12.75 }]);
 
 console.log(blockchain1.incomingChainIsValid(blockchain2.chain));
