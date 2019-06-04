@@ -21,7 +21,7 @@
   },
   "scripts": {
     "start": "nodemon --exec ts-node -- index.ts",
-    "test": "jest --watch **/*.test.ts",
+    "test": "jest --watch",
     "lint": "eslint src/** --ext .ts,.tsx"
   },
   "author": "Zak Angelle",
