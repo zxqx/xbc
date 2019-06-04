@@ -22,7 +22,7 @@
   "scripts": {
     "start": "nodemon --exec ts-node -- index.ts",
     "test": "jest --watch **/*.test.ts",
-    "lint": "eslint **/*.ts"
+    "lint": "eslint src/** --ext .ts,.tsx"
   },
   "author": "Zak Angelle",
   "license": "MIT",
