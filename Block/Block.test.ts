@@ -1,4 +1,4 @@
-import Block from './';
+import Block from '.';
 
 describe('Block', () => {
   it('generates a genesis block', () => {

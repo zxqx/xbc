@@ -26,7 +26,7 @@ export default class Blockchain {
     if (block.lastHash !== lastBlock.hash) {
       return false;
     }
-    
+
     if (block.hash !== Block.hash(block)) {
       return false;
     }

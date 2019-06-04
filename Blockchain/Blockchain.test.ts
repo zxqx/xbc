@@ -1,4 +1,4 @@
-import Blockchain from './';
+import Blockchain from '.';
 import Block from '../Block';
 
 describe('Blockchain', () => {
@@ -15,7 +15,7 @@ describe('Blockchain', () => {
         hash: 'hash',
         data: [{ test: 'test' }],
         timestamp: 1,
-      }
+      },
     ];
 
     const blockchain = new Blockchain(chain);
@@ -36,7 +36,7 @@ describe('Blockchain', () => {
         hash: 'secondHash',
         data: [{ test: 'test' }],
         timestamp: 2,
-      }
+      },
     ];
 
     const blockchain = new Blockchain(chain);
@@ -93,7 +93,7 @@ describe('Blockchain', () => {
         hash: 'hash',
         data: [{ test: 'test' }],
         timestamp: 1,
-      }
+      },
     ];
 
     const blockchain2 = new Blockchain(chain);
@@ -134,7 +134,7 @@ describe('Blockchain', () => {
     const blockchain2 = new Blockchain();
     blockchain2.addBlock([{ transaction: 7.44 }]);
     blockchain2.addBlock([{ transaction: 2.50 }]);
-    
+
     blockchain1.sync(blockchain2);
 
     expect(blockchain1.chain).toEqual(blockchain2.chain);
@@ -147,7 +147,7 @@ describe('Blockchain', () => {
 
     const blockchain2 = new Blockchain();
     blockchain2.addBlock([{ transaction: 7.44 }]);
-    
+
     blockchain1.sync(blockchain2);
 
     expect(blockchain1.chain).not.toEqual(blockchain2.chain);
