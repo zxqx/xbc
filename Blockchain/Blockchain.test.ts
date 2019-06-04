@@ -101,7 +101,7 @@ describe('Blockchain', () => {
     expect(blockchain1.incomingChainIsValid(blockchain2.chain)).toBe(false);
   });
 
-  it('invalidates incoming chain containing block with invalid lastious hash', () => {
+  it('invalidates incoming chain containing block with invalid previous hash', () => {
     const blockchain1 = new Blockchain();
     blockchain1.addBlock([{ transaction: 7.44 }]);
 
