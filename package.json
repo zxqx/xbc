@@ -1,7 +1,7 @@
 {
   "name": "zakchain",
   "version": "1.0.0",
-  "description": "",
+  "description": "A socket-driven distributed cryptocurrency ledger.",
   "main": "index.js",
   "devDependencies": {
     "@types/crypto-js": "^3.1.43",
