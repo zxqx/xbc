@@ -22,6 +22,14 @@ export default class Blockchain {
     return JSON.stringify(chain[0]) === JSON.stringify(Block.getGenesisBlock());
   }
 
+  static blockIsValid(block: Block, lastBlock: Block) {
+    if (block.lastHash === lastBlock.hash && block.hash === Block.hash(block)) {
+      return true;
+    }
+
+    return false;
+  }
+
   incomingChainIsValid(chain: Block[]) {
     if (chain.length <= this.chain.length) {
       return false;
@@ -35,11 +43,7 @@ export default class Blockchain {
       const block = chain[i];
       const lastBlock = chain[i - 1];
 
-      if (block.lastHash !== lastBlock.hash) {
-        return false;
-      }
-
-      if (block.hash !== Block.hash(block)) {
+      if (!Blockchain.blockIsValid(block, lastBlock)) {
         return false;
       }
     }
