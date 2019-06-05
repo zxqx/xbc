@@ -1,4 +1,5 @@
 import Block, { BlockData } from '../Block';
+import { log } from '../util';
 
 export default class Blockchain {
   chain: Block[];
@@ -16,6 +17,8 @@ export default class Blockchain {
     const block = Block.mineBlock(lastBlock, data);
 
     this.chain.push(block);
+
+    log('Added block', block);
   }
 
   static genesisBlockIsValid(chain: Block[]) {
@@ -58,6 +61,8 @@ export default class Blockchain {
   sync({ chain }: Blockchain) {
     if (this.incomingChainIsValid(chain)) {
       this.chain = chain;
+
+      log('Updated chain', chain);
     }
   }
 }

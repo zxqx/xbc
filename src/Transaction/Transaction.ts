@@ -1,5 +1,5 @@
 import Wallet from '../Wallet';
-import { generateUuid, hashToString, getKeyFromPublicAddress } from '../util';
+import { generateUuid, hashToString, getKeyFromPublicAddress, log } from '../util';
 import { Signature } from '../index.d';
 
 interface TransactionProps {
@@ -38,6 +38,8 @@ export default class Transaction {
     ];
 
     this.input = this.createInput(senderWallet);
+
+    log('Created transaction', this);
   }
 
   private static createSenderOutput({ balance, publicKey }: Wallet, amount: number) {

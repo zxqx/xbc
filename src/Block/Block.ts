@@ -1,4 +1,4 @@
-import { hashToString } from '../util';
+import { hashToString, log } from '../util';
 
 export type BlockData = object[];
 
@@ -33,11 +33,15 @@ export default class Block {
     const timestamp = Date.now();
     const hash = Block.hash({ lastHash, data, timestamp });
 
-    return new this({
+    const block = new this({
       lastHash,
       hash,
       data,
       timestamp,
     });
+
+    log('Mined block', block);
+
+    return block;
   }
 }

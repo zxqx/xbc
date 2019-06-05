@@ -19,3 +19,7 @@ export function generateKeyPair() {
 export function getKeyFromPublicAddress(address: string) {
   return ec.keyFromPublic(address, 'hex');
 }
+
+export function log(description: string, data: any) {
+  console.log(description, JSON.stringify(data, null, 2)); // eslint-disable-line
+}
