@@ -1,6 +1,5 @@
-import uuid from 'uuid/v1';
 import Wallet, { Signature } from '../Wallet';
-import { hashToString } from '../util';
+import { hashToString, generateUuid } from '../util';
 
 interface TransactionProps {
   senderWallet: Wallet;
@@ -26,26 +25,36 @@ export default class Transaction {
   outputs: TransactionOutput[];
 
   constructor({ senderWallet, recipientAddress, amount }: TransactionProps) {
-    const { balance, publicKey } = senderWallet;
-
-    if (amount > balance) {
+    if (amount > senderWallet.balance) {
       throw new Error('Amount exceeds sender balance');
     }
 
-    this.id = uuid();
+    this.id = generateUuid();
 
     this.outputs = [
-      {
-        amount: balance - amount,
-        address: publicKey,
-      },
-      {
-        amount,
-        address: recipientAddress,
-      },
+      Transaction.createSenderOutput(senderWallet, amount),
+      Transaction.createRecipientOutput(recipientAddress, amount),
     ];
 
-    this.input = {
+    this.input = this.createInput(senderWallet);
+  }
+
+  private static createSenderOutput({ balance, publicKey }: Wallet, amount: number) {
+    return {
+      amount: balance - amount,
+      address: publicKey,
+    };
+  }
+
+  private static createRecipientOutput(address: string, amount: number) {
+    return {
+      amount,
+      address,
+    };
+  }
+
+  private createInput(senderWallet: Wallet) {
+    return {
       timestamp: Date.now(),
       amount: senderWallet.balance,
       address: senderWallet.publicKey,
