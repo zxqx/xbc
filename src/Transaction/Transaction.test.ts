@@ -38,7 +38,7 @@ describe('Transaction', () => {
     })).toThrow();
   });
 
-  it('verifies a transaction', () => {
+  it('verifies a valid transaction', () => {
     const senderWallet = new Wallet();
     senderWallet.balance = 420;
 
@@ -51,7 +51,7 @@ describe('Transaction', () => {
     expect(transaction.verify()).toBe(true);
   });
 
-  it('fails to verify a transaction if data has been tampered with', () => {
+  it('fails to verify a transaction containing altered data', () => {
     const senderWallet = new Wallet();
     senderWallet.balance = 420;
 

@@ -1,6 +1,6 @@
 import Wallet from '../Wallet';
+import { generateUuid, hashToString, getKeyFromPublicAddress } from '../util';
 import { Signature } from '../index.d';
-import { hashToString, generateUuid, getKeyFromPublic } from '../util';
 
 interface TransactionProps {
   senderWallet: Wallet;
@@ -64,7 +64,7 @@ export default class Transaction {
   }
 
   verify() {
-    return getKeyFromPublic(this.input.address).verify(
+    return getKeyFromPublicAddress(this.input.address).verify(
       hashToString(JSON.stringify(this.outputs)),
       this.input.signature,
     );

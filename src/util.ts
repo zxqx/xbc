@@ -16,6 +16,6 @@ export function generateKeyPair() {
   return ec.genKeyPair();
 }
 
-export function getKeyFromPublic(address: string) {
+export function getKeyFromPublicAddress(address: string) {
   return ec.keyFromPublic(address, 'hex');
 }
