@@ -12,6 +12,10 @@ export function hashToString(data: string) {
   return SHA256(data).toString();
 }
 
+export function generateKeyPair() {
+  return ec.genKeyPair();
+}
+
 export function getKeyFromPublic(address: string) {
   return ec.keyFromPublic(address, 'hex');
 }

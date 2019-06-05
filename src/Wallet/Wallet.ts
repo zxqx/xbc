@@ -1,17 +1,14 @@
-import { ec as EC } from 'elliptic';
-
-const ec = new EC('secp256k1');
-
-export type Signature = EC.Signature;
+import { generateKeyPair } from '../util';
+import { KeyPair } from '../index.d';
 
 export default class Wallet {
   balance: number;
-  keyPair: EC.KeyPair;
+  keyPair: KeyPair;
   publicKey: string;
 
   constructor() {
     this.balance = 0;
-    this.keyPair = ec.genKeyPair();
+    this.keyPair = generateKeyPair();
     this.publicKey = this.keyPair.getPublic().encode('hex', false).toString();
   }
 

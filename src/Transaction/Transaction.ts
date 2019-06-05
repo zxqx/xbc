@@ -1,4 +1,5 @@
-import Wallet, { Signature } from '../Wallet';
+import Wallet from '../Wallet';
+import { Signature } from '../index.d';
 import { hashToString, generateUuid, getKeyFromPublic } from '../util';
 
 interface TransactionProps {
