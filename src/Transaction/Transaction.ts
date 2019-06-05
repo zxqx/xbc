@@ -1,5 +1,5 @@
 import Wallet, { Signature } from '../Wallet';
-import { hashToString, generateUuid } from '../util';
+import { hashToString, generateUuid, getKeyFromPublic } from '../util';
 
 interface TransactionProps {
   senderWallet: Wallet;
@@ -60,5 +60,12 @@ export default class Transaction {
       address: senderWallet.publicKey,
       signature: senderWallet.sign(hashToString(JSON.stringify(this.outputs))),
     };
+  }
+
+  verify() {
+    return getKeyFromPublic(this.input.address).verify(
+      hashToString(JSON.stringify(this.outputs)),
+      this.input.signature,
+    );
   }
 }

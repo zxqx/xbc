@@ -1,4 +1,3 @@
-import { SHA256 } from 'crypto-js';
 import { hashToString } from '../util';
 
 export type BlockData = object[];

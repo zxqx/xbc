@@ -37,4 +37,32 @@ describe('Transaction', () => {
       amount: 50,
     })).toThrow();
   });
+
+  it('verifies a transaction', () => {
+    const senderWallet = new Wallet();
+    senderWallet.balance = 420;
+
+    const transaction = new Transaction({
+      senderWallet,
+      recipientAddress: 's82jr0rjwkqwpor',
+      amount: 170,
+    });
+
+    expect(transaction.verify()).toBe(true);
+  });
+
+  it('fails to verify a transaction if data has been tampered with', () => {
+    const senderWallet = new Wallet();
+    senderWallet.balance = 420;
+
+    const transaction = new Transaction({
+      senderWallet,
+      recipientAddress: 's82jr0rjwkqwpor',
+      amount: 170,
+    });
+
+    transaction.outputs[0].amount = 300;
+
+    expect(transaction.verify()).toBe(false);
+  });
 });
