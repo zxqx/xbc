@@ -1,4 +1,4 @@
-import Block, { BlockData } from '../Block';
+import Block from '../Block';
 import { log } from '../util';
 
 export default class Blockchain {
@@ -12,13 +12,13 @@ export default class Blockchain {
     return this.chain[this.chain.length - 1];
   }
 
-  addBlock(data: BlockData) {
+  addBlock(data: object[]) {
     const lastBlock = this.getLastBlock();
-    const block = Block.mineBlock(lastBlock, data);
+    const block = Block.mine(lastBlock, data);
 
     this.chain.push(block);
 
-    log('Added block to blockchain', block);
+    log('Added block to chain', block);
   }
 
   static genesisBlockIsValid(chain: Block[]) {

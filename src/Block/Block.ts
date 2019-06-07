@@ -1,13 +1,11 @@
 import { hashToString, log } from '../util';
 
-export type BlockData = object[];
-
 export const MINE_RATE = 3000;
 
 export default class Block {
   lastHash: string;
   hash: string;
-  data: BlockData;
+  data: object[];
   timestamp: number;
   nonce: number;
   difficulty: number;
@@ -46,18 +44,18 @@ export default class Block {
     return difficulty - 1 || 1;
   }
 
-  static mineBlock(lastBlock: Block, data: BlockData) {
+  static mine(lastBlock: Block, data: object[]) {
     const { hash: lastHash } = lastBlock;
 
-    let timestamp = null;
     let hash = null;
+    let timestamp = null;
     let nonce = 0;
     let { difficulty } = lastBlock;
 
     do {
       nonce++;
       timestamp = Date.now();
-      difficulty = Block.getAdjustedDifficulty(lastBlock, Date.now());
+      difficulty = Block.getAdjustedDifficulty(lastBlock, timestamp);
       hash = Block.hash({ lastHash, data, timestamp, nonce, difficulty });
     }
     while (hash.substring(0, difficulty) !== '0'.repeat(difficulty));

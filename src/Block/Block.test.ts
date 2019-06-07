@@ -11,7 +11,7 @@ describe('Block', () => {
   it('sets the block data', () => {
     const blockData = [{ transaction: 4.20 }];
     const lastBlock = Block.getGenesisBlock();
-    const block = Block.mineBlock(lastBlock, blockData);
+    const block = Block.mine(lastBlock, blockData);
 
     expect(block.data).toEqual(blockData);
   });
@@ -19,7 +19,7 @@ describe('Block', () => {
   it('mines a new block with a reference to the previous block', () => {
     const genesisBlock = Block.getGenesisBlock();
     const blockData = [{ transaction: 4.20 }];
-    const block = Block.mineBlock(genesisBlock, blockData);
+    const block = Block.mine(genesisBlock, blockData);
 
     expect(block.lastHash).toEqual(genesisBlock.hash);
   });
@@ -27,7 +27,7 @@ describe('Block', () => {
   it('generates a block hash that correlates with difficulty', () => {
     const lastBlock = Block.getGenesisBlock();
     const blockData = [{ transaction: 4.20 }];
-    const block = Block.mineBlock(lastBlock, blockData);
+    const block = Block.mine(lastBlock, blockData);
 
     expect(block.hash.substring(0, 1)).toEqual('0'.repeat(lastBlock.difficulty));
   });
