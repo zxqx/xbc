@@ -1,8 +1,8 @@
-import { hashToString } from '../util';
+import { hashToString, log } from '../util';
 
 export type BlockData = object[];
 
-export const MINE_RATE = 5000;
+export const MINE_RATE = 3000;
 
 export default class Block {
   lastHash: string;
@@ -32,41 +32,47 @@ export default class Block {
     });
   }
 
-  static hash({ lastHash, data, timestamp, nonce }: Omit<Block, 'hash'>) {
-    return hashToString(`${lastHash}${JSON.stringify(data)}${timestamp}`);
+  static hash({ lastHash, data, timestamp, nonce, difficulty }: Omit<Block, 'hash'>) {
+    return hashToString(`${lastHash}${JSON.stringify(data)}${timestamp}${nonce}${difficulty}`);
   }
 
-  static getAdjustedDifficulty(lastBlock: Block, timestamp: number) {
-    const { timestamp: lastTimestamp, difficulty } = lastBlock;
+  static getAdjustedDifficulty(lastBlock: Block, currentTime: number) {
+    const { timestamp, difficulty } = lastBlock;
 
-    if (lastTimestamp + MINE_RATE > timestamp) {
+    if (timestamp + MINE_RATE > currentTime) {
       return difficulty + 1;
     }
 
-    return difficulty - 1;
+    return difficulty - 1 || 1;
   }
 
   static mineBlock(lastBlock: Block, data: BlockData) {
-    const { hash: lastHash, difficulty } = lastBlock;
+    const { hash: lastHash } = lastBlock;
 
     let timestamp = null;
     let hash = null;
     let nonce = 0;
+    let { difficulty } = lastBlock;
 
     do {
-      timestamp = Date.now();
-      hash = Block.hash({ lastHash, data, timestamp, nonce, difficulty });
       nonce++;
+      timestamp = Date.now();
+      difficulty = Block.getAdjustedDifficulty(lastBlock, Date.now());
+      hash = Block.hash({ lastHash, data, timestamp, nonce, difficulty });
     }
     while (hash.substring(0, difficulty) !== '0'.repeat(difficulty));
 
-    return new this({
+    const block = new this({
       lastHash,
       hash,
       data,
       timestamp,
       nonce,
-      difficulty: Block.getAdjustedDifficulty(lastBlock, timestamp),
+      difficulty,
     });
+
+    log(`Block mined in ${(timestamp - lastBlock.timestamp) / 1000}s`, block);
+
+    return block;
   }
 }

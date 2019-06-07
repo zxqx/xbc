@@ -18,7 +18,7 @@ export default class Blockchain {
 
     this.chain.push(block);
 
-    log('Added block', block);
+    log('Added block to blockchain', block);
   }
 
   static genesisBlockIsValid(chain: Block[]) {
