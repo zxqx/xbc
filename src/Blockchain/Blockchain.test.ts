@@ -15,6 +15,8 @@ describe('Blockchain', () => {
         hash: 'hash',
         data: [{ test: 'test' }],
         timestamp: 1,
+        nonce: 0,
+        difficulty: 1,
       },
     ];
 
@@ -30,12 +32,16 @@ describe('Blockchain', () => {
         hash: 'firstHash',
         data: [{ test: 'test' }],
         timestamp: 1,
+        nonce: 79,
+        difficulty: 1,
       },
       {
         lastHash: 'firstHash',
         hash: 'secondHash',
         data: [{ test: 'test' }],
         timestamp: 2,
+        nonce: 420,
+        difficulty: 1,
       },
     ];
 
@@ -93,6 +99,8 @@ describe('Blockchain', () => {
         hash: 'hash',
         data: [{ test: 'test' }],
         timestamp: 1,
+        nonce: 4,
+        difficulty: 1,
       },
     ];
 
