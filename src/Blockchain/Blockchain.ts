@@ -17,8 +17,6 @@ export default class Blockchain {
     const block = Block.mine(lastBlock, data);
 
     this.chain.push(block);
-
-    log('Added block to chain', block);
   }
 
   static genesisBlockIsValid(chain: Block[]) {

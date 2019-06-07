@@ -23,5 +23,5 @@ export function getKeyFromPublicAddress(address: string) {
 export function log(description: string, data: any) {
   const output = typeof data === 'object' ? JSON.stringify(data, null, 2) : data;
 
-  console.log(`${description}:`, output); // eslint-disable-line
+  console.log(`${description}:`, `${output}\n`); // eslint-disable-line
 }
