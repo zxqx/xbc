@@ -1,5 +1,7 @@
 import Blockchain from '.';
 import Block from '../Block';
+import Wallet from '../Wallet';
+import Transaction from '../Transaction';
 
 describe('Blockchain', () => {
   it('creates a new blockchain with genesis block by default', () => {
@@ -9,11 +11,20 @@ describe('Blockchain', () => {
   });
 
   it('creates a new blockchain with a provided chain', () => {
+    const senderWallet = new Wallet();
+    senderWallet.balance = 80;
+
+    const blockData = [new Transaction({
+      senderWallet,
+      recipientAddress: 'sjd29ejf9jf92',
+      amount: 7.44,
+    })];
+
     const chain = [
       {
         lastHash: 'lastHash',
         hash: 'hash',
-        data: [{ test: 'test' }],
+        data: blockData,
         timestamp: 1,
         nonce: 0,
         difficulty: 1,
@@ -26,11 +37,20 @@ describe('Blockchain', () => {
   });
 
   it('gets last block in the blockchain', () => {
+    const senderWallet = new Wallet();
+    senderWallet.balance = 80;
+
+    const blockData = [new Transaction({
+      senderWallet,
+      recipientAddress: 'sjd29ejf9jf92',
+      amount: 7.44,
+    })];
+
     const chain = [
       {
         lastHash: 'none',
         hash: 'firstHash',
-        data: [{ test: 'test' }],
+        data: blockData,
         timestamp: 1,
         nonce: 79,
         difficulty: 1,
@@ -38,7 +58,7 @@ describe('Blockchain', () => {
       {
         lastHash: 'firstHash',
         hash: 'secondHash',
-        data: [{ test: 'test' }],
+        data: blockData,
         timestamp: 2,
         nonce: 420,
         difficulty: 1,
@@ -52,7 +72,14 @@ describe('Blockchain', () => {
 
   it('adds a block to the blockchain', () => {
     const blockchain = new Blockchain();
-    const blockData = [{ test: 'test' }];
+    const senderWallet = new Wallet();
+    senderWallet.balance = 80;
+
+    const blockData = [new Transaction({
+      senderWallet,
+      recipientAddress: 'sjd29ejf9jf92',
+      amount: 7.44,
+    })];
 
     blockchain.addBlock(blockData);
 
@@ -68,36 +95,86 @@ describe('Blockchain', () => {
 
   it('validates valid incoming chain', () => {
     const blockchain1 = new Blockchain();
-    blockchain1.addBlock([{ transaction: 7.44 }]);
-    blockchain1.addBlock([{ transaction: 2.50 }]);
-
     const blockchain2 = new Blockchain();
-    blockchain2.addBlock([{ transaction: 7.44 }]);
-    blockchain2.addBlock([{ transaction: 2.12 }]);
-    blockchain2.addBlock([{ transaction: 12.75 }]);
+    const senderWallet = new Wallet();
+    senderWallet.balance = 80;
+
+    blockchain1.addBlock([new Transaction({
+      senderWallet,
+      recipientAddress: 'sjd29ejf9jf92',
+      amount: 7.44,
+    })]);
+
+    blockchain1.addBlock([new Transaction({
+      senderWallet,
+      recipientAddress: 'sjd29ejf9jf92',
+      amount: 2.12,
+    })]);
+
+    blockchain2.addBlock([new Transaction({
+      senderWallet,
+      recipientAddress: 'sjd29ejf9jf92',
+      amount: 7.44,
+    })]);
+
+    blockchain2.addBlock([new Transaction({
+      senderWallet,
+      recipientAddress: 'sjd29ejf9jf92',
+      amount: 2.12,
+    })]);
+
+    blockchain2.addBlock([new Transaction({
+      senderWallet,
+      recipientAddress: 'sjd29ejf9jf92',
+      amount: 12.75,
+    })]);
 
     expect(blockchain1.incomingChainIsValid(blockchain2.chain)).toBe(true);
   });
 
   it('invalidates shorter incoming chain', () => {
     const blockchain1 = new Blockchain();
-    blockchain1.addBlock([{ transaction: 7.44 }]);
-    blockchain1.addBlock([{ transaction: 2.50 }]);
-
     const blockchain2 = new Blockchain();
-    blockchain2.addBlock([{ transaction: 2.12 }]);
+    const senderWallet = new Wallet();
+    senderWallet.balance = 80;
+
+    blockchain1.addBlock([new Transaction({
+      senderWallet,
+      recipientAddress: 'sjd29ejf9jf92',
+      amount: 7.44,
+    })]);
+
+    blockchain1.addBlock([new Transaction({
+      senderWallet,
+      recipientAddress: 'sjd29ejf9jf92',
+      amount: 2.12,
+    })]);
+
+    blockchain2.addBlock([new Transaction({
+      senderWallet,
+      recipientAddress: 'sjd29ejf9jf92',
+      amount: 7.44,
+    })]);
 
     expect(blockchain1.incomingChainIsValid(blockchain2.chain)).toBe(false);
   });
 
   it('invalidates incoming chain with invalid genesis block', () => {
     const blockchain1 = new Blockchain();
+    const senderWallet = new Wallet();
+    senderWallet.balance = 80;
+
+    const blockData = [new Transaction({
+      senderWallet,
+      recipientAddress: 'sjd29ejf9jf92',
+      amount: 7.44,
+    })];
 
     const chain = [
       {
         lastHash: 'lastHash',
         hash: 'hash',
-        data: [{ test: 'test' }],
+        data: blockData,
         timestamp: 1,
         nonce: 4,
         difficulty: 1,
@@ -111,11 +188,27 @@ describe('Blockchain', () => {
 
   it('invalidates incoming chain containing block with invalid previous hash', () => {
     const blockchain1 = new Blockchain();
-    blockchain1.addBlock([{ transaction: 7.44 }]);
-
     const blockchain2 = new Blockchain();
-    blockchain2.addBlock([{ transaction: 7.44 }]);
-    blockchain2.addBlock([{ transaction: 2.50 }]);
+    const senderWallet = new Wallet();
+    senderWallet.balance = 80;
+
+    blockchain1.addBlock([new Transaction({
+      senderWallet,
+      recipientAddress: 'sjd29ejf9jf92',
+      amount: 7.44,
+    })]);
+
+    blockchain2.addBlock([new Transaction({
+      senderWallet,
+      recipientAddress: 'sjd29ejf9jf92',
+      amount: 7.44,
+    })]);
+
+    blockchain2.addBlock([new Transaction({
+      senderWallet,
+      recipientAddress: 'sjd29ejf9jf92',
+      amount: 2.12,
+    })]);
 
     blockchain2.chain[2].lastHash = 'hacked';
 
@@ -124,11 +217,27 @@ describe('Blockchain', () => {
 
   it('invalidates incoming chain containing block with invalid hash', () => {
     const blockchain1 = new Blockchain();
-    blockchain1.addBlock([{ transaction: 7.44 }]);
-
     const blockchain2 = new Blockchain();
-    blockchain2.addBlock([{ transaction: 7.44 }]);
-    blockchain2.addBlock([{ transaction: 2.50 }]);
+    const senderWallet = new Wallet();
+    senderWallet.balance = 80;
+
+    blockchain1.addBlock([new Transaction({
+      senderWallet,
+      recipientAddress: 'sjd29ejf9jf92',
+      amount: 7.44,
+    })]);
+
+    blockchain2.addBlock([new Transaction({
+      senderWallet,
+      recipientAddress: 'sjd29ejf9jf92',
+      amount: 7.44,
+    })]);
+
+    blockchain2.addBlock([new Transaction({
+      senderWallet,
+      recipientAddress: 'sjd29ejf9jf92',
+      amount: 2.12,
+    })]);
 
     blockchain2.chain[2].hash = 'hacked';
 
@@ -137,11 +246,27 @@ describe('Blockchain', () => {
 
   it('syncs blockchain with valid incoming blockchain', () => {
     const blockchain1 = new Blockchain();
-    blockchain1.addBlock([{ transaction: 7.44 }]);
-
     const blockchain2 = new Blockchain();
-    blockchain2.addBlock([{ transaction: 7.44 }]);
-    blockchain2.addBlock([{ transaction: 2.50 }]);
+    const senderWallet = new Wallet();
+    senderWallet.balance = 80;
+
+    blockchain1.addBlock([new Transaction({
+      senderWallet,
+      recipientAddress: 'sjd29ejf9jf92',
+      amount: 7.44,
+    })]);
+
+    blockchain2.addBlock([new Transaction({
+      senderWallet,
+      recipientAddress: 'sjd29ejf9jf92',
+      amount: 7.44,
+    })]);
+
+    blockchain2.addBlock([new Transaction({
+      senderWallet,
+      recipientAddress: 'sjd29ejf9jf92',
+      amount: 2.12,
+    })]);
 
     blockchain1.sync(blockchain2);
 
@@ -150,11 +275,28 @@ describe('Blockchain', () => {
 
   it('does not syncs blockchain with invalid incoming blockchain', () => {
     const blockchain1 = new Blockchain();
-    blockchain1.addBlock([{ transaction: 7.44 }]);
-    blockchain1.addBlock([{ transaction: 2.50 }]);
-
     const blockchain2 = new Blockchain();
-    blockchain2.addBlock([{ transaction: 7.44 }]);
+    const senderWallet = new Wallet();
+    senderWallet.balance = 80;
+
+    blockchain1.addBlock([new Transaction({
+      senderWallet,
+      recipientAddress: 'sjd29ejf9jf92',
+      amount: 7.44,
+    })]);
+
+    blockchain1.addBlock([new Transaction({
+      senderWallet,
+      recipientAddress: 'sjd29ejf9jf92',
+      amount: 2.12,
+    })]);
+
+    blockchain2.addBlock([new Transaction({
+      senderWallet,
+      recipientAddress: 'sjd29ejf9jf92',
+      amount: 7.44,
+    })]);
+
 
     blockchain1.sync(blockchain2);
 
