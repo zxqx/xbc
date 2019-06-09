@@ -2,7 +2,6 @@ import Block from '../Block';
 import Wallet from '../Wallet';
 import Transaction from '../Transaction';
 import { log } from '../util';
-import { BLOCKCHAIN_WALLET_ADDRESS, BLOCKCHAIN_WALLET_BALANCE } from '../config';
 
 export default class Blockchain {
   chain: Block[];
@@ -10,9 +9,7 @@ export default class Blockchain {
 
   constructor(chain: Block[] = [Block.getGenesisBlock()]) {
     this.chain = chain;
-    this.wallet = new Wallet();
-    this.wallet.publicKey = BLOCKCHAIN_WALLET_ADDRESS;
-    this.wallet.balance = BLOCKCHAIN_WALLET_BALANCE;
+    this.wallet = Wallet.getBlockchainWallet();
   }
 
   getLastBlock() {
