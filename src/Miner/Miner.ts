@@ -7,14 +7,16 @@ import { BLOCK_MINE_REWARD } from '../config';
 export default class Miner {
   blockchain: Blockchain;
   wallet: Wallet;
+  transactionPool: TransactionPool;
 
   constructor() {
     this.blockchain = new Blockchain();
     this.wallet = new Wallet();
+    this.transactionPool = new TransactionPool();
   }
 
-  mine(transactionPool: TransactionPool) {
-    const validTransactions = transactionPool.getValidTransactions();
+  mine() {
+    const validTransactions = this.transactionPool.getValidTransactions();
 
     const miningRewardTransaction = new Transaction({
       senderWallet: this.blockchain.wallet,
@@ -27,6 +29,6 @@ export default class Miner {
       miningRewardTransaction,
     ]);
 
-    transactionPool.clear();
+    this.transactionPool.clear();
   }
 }
