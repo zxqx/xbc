@@ -15,14 +15,17 @@ export default class Miner {
     this.transactionPool = new TransactionPool();
   }
 
-  mine() {
-    const validTransactions = this.transactionPool.getValidTransactions();
-
-    const miningRewardTransaction = new Transaction({
+  createMiningRewardTransaction() {
+    return new Transaction({
       senderWallet: this.blockchain.wallet,
       recipientAddress: this.wallet.publicKey,
       amount: BLOCK_MINE_REWARD,
     });
+  }
+
+  mine() {
+    const validTransactions = this.transactionPool.getValidTransactions();
+    const miningRewardTransaction = this.createMiningRewardTransaction();
 
     this.blockchain.addBlock([
       ...validTransactions,
