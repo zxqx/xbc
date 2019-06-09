@@ -7,12 +7,16 @@ export default class TransactionPool {
     this.transactions = [];
   }
 
-  getExistingTransaction(transaction: Transaction) {
-    return this.transactions.find(t => t.id === transaction.id);
+  getExistingTransactionById(id: string) {
+    return this.transactions.find(transaction => transaction.id === id);
+  }
+
+  getExistingTransactionByInputAddress(address: string) {
+    return this.transactions.find(t => t.input.address === address);
   }
 
   addOrUpdateTransaction(transaction: Transaction) {
-    const existingTransaction = this.getExistingTransaction(transaction);
+    const existingTransaction = this.getExistingTransactionById(transaction.id);
 
     if (existingTransaction) {
       const index = this.transactions.indexOf(existingTransaction);
