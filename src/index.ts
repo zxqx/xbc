@@ -1,5 +1,5 @@
 import Blockchain from './Blockchain';
-import { MINE_RATE } from './Block';
+import { MINE_RATE } from './config';
 
 const NUMBER_OF_BLOCKS = 50;
 

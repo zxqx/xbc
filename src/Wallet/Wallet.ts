@@ -18,7 +18,7 @@ export default class Wallet {
     return this.keyPair.sign(data);
   }
 
-  createTransaction(recipientAddress: string, amount: number, transactionPool: TransactionPool) {
+  createTransaction(transactionPool: TransactionPool, recipientAddress: string, amount: number) {
     let transaction = transactionPool.getExistingTransactionByInputAddress(this.publicKey);
 
     if (transaction) {

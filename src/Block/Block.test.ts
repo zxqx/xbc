@@ -1,4 +1,5 @@
-import Block, { MINE_RATE } from '.';
+import Block from '.';
+import { MINE_RATE } from '../config';
 
 describe('Block', () => {
   it('generates a genesis block', () => {

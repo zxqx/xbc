@@ -1,6 +1,5 @@
 import { hashToString, log } from '../util';
-
-export const MINE_RATE = 3000;
+import { MINE_RATE } from '../config';
 
 export default class Block {
   lastHash: string;
