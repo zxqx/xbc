@@ -65,4 +65,48 @@ describe('Transaction', () => {
 
     expect(transaction.verify()).toBe(false);
   });
+
+  it('updates a transaction and generates a new signature', () => {
+    const senderWallet = new Wallet();
+    senderWallet.balance = 420;
+
+    const transaction = new Transaction({
+      senderWallet,
+      recipientAddress: 's82jr0rjwkqwpor',
+      amount: 170,
+    });
+
+    transaction.update(senderWallet, 'dje923j0asjisjd20', 150);
+
+    expect(transaction.outputs.map(output => output.amount)).toEqual([100, 170, 150]);
+    expect(transaction.verify()).toBe(true);
+  });
+
+  it('fails to update a transaction if sender output does not exist', () => {
+    const senderWallet = new Wallet();
+    senderWallet.balance = 420;
+
+    const unknownWallet = new Wallet();
+
+    const transaction = new Transaction({
+      senderWallet,
+      recipientAddress: 's82jr0rjwkqwpor',
+      amount: 170,
+    });
+
+    expect(() => transaction.update(unknownWallet, 'dje923j0asjisjd20', 150)).toThrow();
+  });
+
+  it('fails to update a transaction if amount exceeds wallet balance', () => {
+    const senderWallet = new Wallet();
+    senderWallet.balance = 420;
+
+    const transaction = new Transaction({
+      senderWallet,
+      recipientAddress: 's82jr0rjwkqwpor',
+      amount: 170,
+    });
+
+    expect(() => transaction.update(senderWallet, 'dje923j0asjisjd20', 800)).toThrow();
+  });
 });

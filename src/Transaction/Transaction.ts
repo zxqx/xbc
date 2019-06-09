@@ -61,8 +61,29 @@ export default class Transaction {
       timestamp: Date.now(),
       amount: senderWallet.balance,
       address: senderWallet.publicKey,
-      signature: senderWallet.sign(hashToString(JSON.stringify(this.outputs))),
+      signature: Transaction.generateSignature(this, senderWallet),
     };
+  }
+
+  static generateSignature(transaction: Transaction, senderWallet: Wallet) {
+    return senderWallet.sign(hashToString(JSON.stringify(transaction.outputs)));
+  }
+
+  update(senderWallet: Wallet, recipientAddress: string, amount: number) {
+    const senderOutput = this.outputs.find(output => output.address === senderWallet.publicKey);
+
+    if (!senderOutput) {
+      throw new Error('Cannot update transaction because no sender output exists');
+    }
+
+    if (amount > senderOutput.amount) {
+      throw new Error('Amount exceeds sender balance');
+    }
+
+    senderOutput.amount -= amount;
+
+    this.outputs.push(Transaction.createRecipientOutput(recipientAddress, amount));
+    this.input.signature = Transaction.generateSignature(this, senderWallet);
   }
 
   verify() {
