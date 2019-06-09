@@ -1,4 +1,5 @@
 import Block from '.';
+import Blockchain from '../Blockchain';
 import Wallet from '../Wallet';
 import TransactionPool from '../TransactionPool';
 import { MINE_RATE } from '../config';
@@ -13,10 +14,11 @@ describe('Block', () => {
 
   it('sets the block data', () => {
     const pool = new TransactionPool();
+    const blockchain = new Blockchain();
     const wallet = new Wallet();
     wallet.balance = 80;
 
-    const blockData = [wallet.createTransaction(pool, 'sjd29ejf9jf92', 50)];
+    const blockData = [wallet.createTransaction(pool, blockchain, 'sjd29ejf9jf92', 50)];
     const lastBlock = Block.getGenesisBlock();
     const block = Block.mine(lastBlock, blockData);
 
@@ -26,10 +28,11 @@ describe('Block', () => {
   it('mines a new block with a reference to the previous block', () => {
     const genesisBlock = Block.getGenesisBlock();
     const pool = new TransactionPool();
+    const blockchain = new Blockchain();
     const wallet = new Wallet();
     wallet.balance = 80;
 
-    const blockData = [wallet.createTransaction(pool, 'sjd29ejf9jf92', 50)];
+    const blockData = [wallet.createTransaction(pool, blockchain, 'sjd29ejf9jf92', 50)];
     const block = Block.mine(genesisBlock, blockData);
 
     expect(block.lastHash).toEqual(genesisBlock.hash);
@@ -38,10 +41,11 @@ describe('Block', () => {
   it('generates a block hash that correlates with difficulty', () => {
     const lastBlock = Block.getGenesisBlock();
     const pool = new TransactionPool();
+    const blockchain = new Blockchain();
     const wallet = new Wallet();
     wallet.balance = 80;
 
-    const blockData = [wallet.createTransaction(pool, 'sjd29ejf9jf92', 50)];
+    const blockData = [wallet.createTransaction(pool, blockchain, 'sjd29ejf9jf92', 50)];
     const block = Block.mine(lastBlock, blockData);
 
     expect(block.hash.substring(0, 1)).toEqual('0'.repeat(lastBlock.difficulty));
@@ -49,10 +53,11 @@ describe('Block', () => {
 
   it('adjusts difficulty up when actual mine rate is too high', () => {
     const pool = new TransactionPool();
+    const blockchain = new Blockchain();
     const wallet = new Wallet();
     wallet.balance = 80;
 
-    const blockData = [wallet.createTransaction(pool, 'sjd29ejf9jf92', 50)];
+    const blockData = [wallet.createTransaction(pool, blockchain, 'sjd29ejf9jf92', 50)];
 
     const lastBlock = new Block({
       lastHash: 'gji8j20rjwifjsgasj',
@@ -70,10 +75,11 @@ describe('Block', () => {
 
   it('adjusts difficulty down when actual mine rate is too low', () => {
     const pool = new TransactionPool();
+    const blockchain = new Blockchain();
     const wallet = new Wallet();
     wallet.balance = 80;
 
-    const blockData = [wallet.createTransaction(pool, 'sjd29ejf9jf92', 50)];
+    const blockData = [wallet.createTransaction(pool, blockchain, 'sjd29ejf9jf92', 50)];
 
     const lastBlock = new Block({
       lastHash: 'gji8j20rjwifjsgasj',

@@ -9,11 +9,11 @@ describe('Miner', () => {
     const wallet = new Wallet();
     wallet.balance = 1000;
 
-    wallet.createTransaction(miner.transactionPool, 'sjw8j2029jfaskdj', 50);
-    wallet.createTransaction(miner.transactionPool, 'fsfij28hfajk2has', 75);
-    wallet.createTransaction(miner.transactionPool, 'sjf82hjaosfjw28a', 75);
-    wallet.createTransaction(miner.transactionPool, 'js82hj2iuhjfsih2', 100);
-    wallet.createTransaction(miner.transactionPool, 'ksjuwn92jfksgkgj', 400);
+    wallet.createTransaction(miner.transactionPool, miner.blockchain, 'sjw8j2029jfaskdj', 50);
+    wallet.createTransaction(miner.transactionPool, miner.blockchain, 'fsfij28hfajk2has', 75);
+    wallet.createTransaction(miner.transactionPool, miner.blockchain, 'sjf82hjaosfjw28a', 75);
+    wallet.createTransaction(miner.transactionPool, miner.blockchain, 'js82hj2iuhjfsih2', 100);
+    wallet.createTransaction(miner.transactionPool, miner.blockchain, 'ksjuwn92jfksgkgj', 400);
 
     miner.mine();
 

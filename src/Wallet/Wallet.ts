@@ -1,3 +1,4 @@
+import Blockchain from '../Blockchain';
 import Transaction from '../Transaction';
 import TransactionPool from '../TransactionPool';
 import { generateKeyPair } from '../util';
@@ -23,11 +24,54 @@ export default class Wallet {
     return wallet;
   }
 
+  calculateBalance(blockchain: Blockchain) {
+    const { balance } = this;
+
+    const transactions = blockchain.chain.map(block => block.data).flat();
+
+    const inputTransactions = transactions
+      .filter(transaction => transaction.input.address === this.publicKey);
+
+    if (inputTransactions.length > 0) {
+      const [lastTransactionCreated] = inputTransactions
+        .sort((a, b) => b.input.timestamp - a.input.timestamp);
+
+      const { timestamp } = lastTransactionCreated.input;
+
+      const walletOutput = lastTransactionCreated.outputs
+        .find(output => output.address === this.publicKey);
+
+      const amount = walletOutput ? walletOutput.amount : 0;
+
+      const transactionsAfterLastCreated = transactions
+        .filter(transaction => transaction.input.timestamp > timestamp);
+
+      return transactionsAfterLastCreated.reduce((totalAmount, transaction) => {
+        const output = transaction.outputs.find(o => o.address === this.publicKey);
+
+        if (output) {
+          return totalAmount + output.amount;
+        }
+
+        return totalAmount;
+      }, amount);
+    }
+
+    return balance;
+  }
+
   sign(data: string) {
     return this.keyPair.sign(data);
   }
 
-  createTransaction(transactionPool: TransactionPool, recipientAddress: string, amount: number) {
+  createTransaction(
+    transactionPool: TransactionPool,
+    blockchain: Blockchain,
+    recipientAddress: string,
+    amount: number,
+  ) {
+    this.balance = this.calculateBalance(blockchain);
+
     let transaction = transactionPool.getExistingTransactionByInputAddress(this.publicKey);
 
     if (transaction) {

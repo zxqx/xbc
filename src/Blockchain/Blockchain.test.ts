@@ -297,7 +297,6 @@ describe('Blockchain', () => {
       amount: 7.44,
     })]);
 
-
     blockchain1.sync(blockchain2);
 
     expect(blockchain1.chain).not.toEqual(blockchain2.chain);
