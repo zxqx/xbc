@@ -35,14 +35,18 @@ describe('Wallet', () => {
     const wallet2 = new Wallet();
     wallet2.balance = 120;
 
-    const transaction = wallet1.createTransaction(pool, blockchain, '4sjw8j2198jfsaij19', 18);
+    const transaction1 = wallet1.createTransaction(pool, blockchain, '4sjw8j2198jfsaij19', 18);
     const transaction2 = wallet2.createTransaction(pool, blockchain, '1823128rhf8jwf8wfdj', 37);
-    blockchain.addBlock([transaction, transaction2]);
-    pool.clear();
-
     const transaction3 = wallet1.createTransaction(pool, blockchain, '821hf89jss8jd18289', 45);
     const transaction4 = wallet2.createTransaction(pool, blockchain, wallet1.publicKey, 12);
 
-    blockchain.addBlock([transaction3, transaction4]);
+    pool.addOrUpdateTransaction(transaction1);
+    pool.addOrUpdateTransaction(transaction2);
+    pool.addOrUpdateTransaction(transaction3);
+    pool.addOrUpdateTransaction(transaction4);
+
+    blockchain.addBlock(pool.transactions);
+
+    expect(wallet1.calculateBalance(blockchain)).toEqual(29);
   });
 });
