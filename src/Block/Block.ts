@@ -1,10 +1,11 @@
+import Transaction from '../Transaction';
 import { hashToString, log } from '../util';
 import { MINE_RATE } from '../config';
 
 export default class Block {
   lastHash: string;
   hash: string;
-  data: object[];
+  data: Transaction[];
   timestamp: number;
   nonce: number;
   difficulty: number;
@@ -43,7 +44,7 @@ export default class Block {
     return difficulty - 1 || 1;
   }
 
-  static mine(lastBlock: Block, data: object[]) {
+  static mine(lastBlock: Block, data: Transaction[]) {
     const { hash: lastHash } = lastBlock;
 
     let hash = null;

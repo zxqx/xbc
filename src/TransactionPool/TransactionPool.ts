@@ -15,6 +15,10 @@ export default class TransactionPool {
     return this.transactions.find(t => t.input.address === address);
   }
 
+  getValidTransactions() {
+    return this.transactions.filter(transaction => transaction.verify());
+  }
+
   addOrUpdateTransaction(transaction: Transaction) {
     const existingTransaction = this.getExistingTransactionById(transaction.id);
 
@@ -26,5 +30,9 @@ export default class TransactionPool {
     }
 
     this.transactions.push(transaction);
+  }
+
+  clear() {
+    this.transactions = [];
   }
 }
