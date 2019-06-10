@@ -25,39 +25,25 @@ export default class Wallet {
   }
 
   calculateBalance(blockchain: Blockchain) {
-    const { balance } = this;
+    const lastTransactionCreated = blockchain.getLastTransactionCreatedByWallet(this);
 
-    const transactions = blockchain.chain.map(block => block.data).flat();
-
-    const inputTransactions = transactions
-      .filter(transaction => transaction.input.address === this.publicKey);
-
-    if (inputTransactions.length > 0) {
-      const [lastTransactionCreated] = inputTransactions
-        .sort((a, b) => b.input.timestamp - a.input.timestamp);
-
-      const { timestamp } = lastTransactionCreated.input;
-
-      const walletOutput = lastTransactionCreated.outputs
-        .find(output => output.address === this.publicKey);
-
-      const amount = walletOutput ? walletOutput.amount : 0;
-
-      const transactionsAfterLastCreated = transactions
-        .filter(transaction => transaction.input.timestamp > timestamp);
-
-      return transactionsAfterLastCreated.reduce((totalAmount, transaction) => {
-        const output = transaction.outputs.find(o => o.address === this.publicKey);
-
-        if (output) {
-          return totalAmount + output.amount;
-        }
-
-        return totalAmount;
-      }, amount);
+    if (!lastTransactionCreated) {
+      return this.balance;
     }
 
-    return balance;
+    const lastOutput = lastTransactionCreated.outputs
+      .find(output => output.address === this.publicKey);
+
+    const amount = lastOutput ? lastOutput.amount : 0;
+    const { timestamp } = lastTransactionCreated.input;
+
+    const recentTransactions = blockchain.getTransactionsAfterTime(timestamp);
+
+    return recentTransactions.reduce((totalAmount, transaction) => {
+      const recentOutput = transaction.outputs.find(output => output.address === this.publicKey);
+
+      return recentOutput ? totalAmount + recentOutput.amount : totalAmount;
+    }, amount);
   }
 
   sign(data: string) {

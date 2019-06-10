@@ -67,4 +67,30 @@ export default class Blockchain {
       log('Updated chain', chain);
     }
   }
+
+  getAllTransactions() {
+    return this.chain.map(block => block.data).flat();
+  }
+
+  getAllTransactionsCreatedByWallet(wallet: Wallet) {
+    const transactions = this.getAllTransactions();
+
+    return transactions.filter(transaction => transaction.input.address === wallet.publicKey);
+  }
+
+  getLastTransactionCreatedByWallet(wallet: Wallet) {
+    const transactionsCreated = this.getAllTransactionsCreatedByWallet(wallet);
+
+    if (transactionsCreated.length === 0) {
+      return false;
+    }
+
+    return transactionsCreated.sort((a, b) => b.input.timestamp - a.input.timestamp)[0];
+  }
+
+  getTransactionsAfterTime(timestamp: number) {
+    const transactions = this.getAllTransactions();
+
+    return transactions.filter(transaction => transaction.input.timestamp > timestamp);
+  }
 }
