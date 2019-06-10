@@ -32,7 +32,7 @@ export default class Wallet {
     }
 
     const recentTransactions = blockchain.getTransactionsAfterTime(lastTransactionCreated.input.timestamp);
-    const lastOutput = lastTransactionCreated.outputs.find(output => output.address === this.publicKey);
+    const lastOutput = lastTransactionCreated.getOutputByAddress(this.publicKey);
     const amount = lastOutput ? lastOutput.amount : 0;
 
     return recentTransactions.reduce((totalAmount, transaction) => {
