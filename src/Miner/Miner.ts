@@ -16,11 +16,12 @@ export default class Miner {
   }
 
   createMiningRewardTransaction() {
-    return new Transaction({
-      senderWallet: this.blockchain.wallet,
-      recipientAddress: this.wallet.publicKey,
-      amount: BLOCK_MINE_REWARD,
-    });
+    return this.blockchain.wallet.createTransaction(
+      this.transactionPool,
+      this.blockchain,
+      this.wallet.publicKey,
+      BLOCK_MINE_REWARD,
+    );
   }
 
   mine() {
