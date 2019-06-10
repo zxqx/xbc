@@ -1,3 +1,4 @@
+import { flatten } from 'lodash';
 import Block from '../Block';
 import Wallet from '../Wallet';
 import Transaction from '../Transaction';
@@ -69,7 +70,7 @@ export default class Blockchain {
   }
 
   getAllTransactions() {
-    return this.chain.map(block => block.data).flat();
+    return flatten(this.chain.map(block => block.data));
   }
 
   getAllTransactionsCreatedByWallet(wallet: Wallet) {

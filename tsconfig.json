@@ -2,7 +2,7 @@
   "compilerOptions": {
     "target": "es5",
     "lib": [
-      "esnext", "dom", "es6"
+      "esnext", "es2018", "dom"
     ],
     "module": "commonjs",
     "outDir": "./",
