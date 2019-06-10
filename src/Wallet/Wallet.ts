@@ -31,16 +31,12 @@ export default class Wallet {
       return this.balance;
     }
 
-    const lastOutput = lastTransactionCreated.outputs
-      .find(output => output.address === this.publicKey);
-
+    const recentTransactions = blockchain.getTransactionsAfterTime(lastTransactionCreated.input.timestamp);
+    const lastOutput = lastTransactionCreated.outputs.find(output => output.address === this.publicKey);
     const amount = lastOutput ? lastOutput.amount : 0;
-    const { timestamp } = lastTransactionCreated.input;
-
-    const recentTransactions = blockchain.getTransactionsAfterTime(timestamp);
 
     return recentTransactions.reduce((totalAmount, transaction) => {
-      const recentOutput = transaction.outputs.find(output => output.address === this.publicKey);
+      const recentOutput = transaction.getOutputByAddress(this.publicKey);
 
       return recentOutput ? totalAmount + recentOutput.amount : totalAmount;
     }, amount);

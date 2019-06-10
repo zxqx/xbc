@@ -92,4 +92,8 @@ export default class Transaction {
       this.input.signature,
     );
   }
+
+  getOutputByAddress(address: string) {
+    return this.outputs.find(output => output.address === address);
+  }
 }

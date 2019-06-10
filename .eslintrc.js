@@ -13,6 +13,7 @@ module.exports = {
     'no-unused-vars': 0,
     'no-plusplus': 0,
     'import/prefer-default-export': 0,
+    'max-len': ['error', { code: 110 } ]
   },
   settings: {
     'import/resolver': {
