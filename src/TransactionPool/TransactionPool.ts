@@ -12,7 +12,7 @@ export default class TransactionPool {
   }
 
   getExistingTransactionByInputAddress(address: string) {
-    return this.transactions.find(t => t.input.address === address);
+    return this.transactions.find(transaction => transaction.input.address === address);
   }
 
   getValidTransactions() {

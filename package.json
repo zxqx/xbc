@@ -1,5 +1,5 @@
 {
-  "name": "zakchain",
+  "name": "xbc",
   "version": "1.0.0",
   "description": "A socket-driven distributed cryptocurrency ledger.",
   "main": "src/index.ts",
