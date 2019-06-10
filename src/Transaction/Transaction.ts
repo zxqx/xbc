@@ -69,8 +69,12 @@ export default class Transaction {
     return senderWallet.sign(hashToString(JSON.stringify(transaction.outputs)));
   }
 
+  getOutputByAddress(address: string) {
+    return this.outputs.find(output => output.address === address);
+  }
+
   update(senderWallet: Wallet, recipientAddress: string, amount: number) {
-    const senderOutput = this.outputs.find(output => output.address === senderWallet.publicKey);
+    const senderOutput = this.getOutputByAddress(senderWallet.publicKey);
 
     if (!senderOutput) {
       throw new Error('Cannot update transaction because no sender output exists');
@@ -91,9 +95,5 @@ export default class Transaction {
       hashToString(JSON.stringify(this.outputs)),
       this.input.signature,
     );
-  }
-
-  getOutputByAddress(address: string) {
-    return this.outputs.find(output => output.address === address);
   }
 }

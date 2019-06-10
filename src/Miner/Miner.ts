@@ -1,7 +1,6 @@
 import Blockchain from '../Blockchain';
 import Wallet from '../Wallet';
 import TransactionPool from '../TransactionPool';
-import Transaction from '../Transaction';
 import { BLOCK_MINE_REWARD } from '../config';
 
 export default class Miner {
