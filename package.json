@@ -1,5 +1,7 @@
 {
   "name": "root",
+  "author": "Zak Angelle",
+  "license": "MIT",
   "devDependencies": {
     "lerna": "^3.17.0"
   }

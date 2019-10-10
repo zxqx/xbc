@@ -1,0 +1,20 @@
+name: CI
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node_version: [10, 12]
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Run checks
+      run: |
+        cd packages/lib
+        yarn install
+        yarn lint
+        yarn test
