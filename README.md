@@ -1,3 +1,3 @@
 # xbc
 
-A socket-driven distributed cryptocurrency ledger.
+An MVP implementation of an adaptive difficulty cryptocurrency ledger.
